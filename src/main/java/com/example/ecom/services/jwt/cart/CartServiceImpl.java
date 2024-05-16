@@ -178,6 +178,12 @@ public class CartServiceImpl implements CartService{
 
     public OrderDto placeOrder(PlaceOrderDto placeOrderDto){
         Order activeOrder = orderRepository.findByUserIdAndOrderStatus(placeOrderDto.getUserId(), OrderStatus.PENDING);
+
+        if (activeOrder == null) {
+            // Handle the case where no pending order exists for the user
+            // This could involve creating a new order or throwing an exception
+            throw new IllegalArgumentException("No pending order found for user ID: " + placeOrderDto.getUserId());
+        }
         Optional<User>  optionalUser = userRespository.findById(placeOrderDto.getUserId());
 
         if (optionalUser.isPresent()){
@@ -200,5 +206,9 @@ public class CartServiceImpl implements CartService{
             return activeOrder.getOrderDto();
         }
         return null;
+    }
+
+    public List<OrderDto> getMyPlacedOrders(Long userId){
+        return orderRepository.findByUserIdAndOrderStatusIn(userId, List.of(OrderStatus.PLACED, OrderStatus.SHIPPED, OrderStatus.DELIVERED)).stream().map(Order::getOrderDto).collect(Collectors.toList());
     }
 }

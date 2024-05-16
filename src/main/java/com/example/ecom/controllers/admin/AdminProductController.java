@@ -1,12 +1,15 @@
 package com.example.ecom.controllers.admin;
 
+import com.example.ecom.dto.FAQDto;
 import com.example.ecom.dto.ProductDto;
 import com.example.ecom.entity.Product;
 import com.example.ecom.repository.ProductRepository;
+import com.example.ecom.services.jwt.admin.category.FAQ.FAQService;
 import com.example.ecom.services.jwt.adminProduct.AdminProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -22,6 +25,8 @@ public class AdminProductController {
     private final AdminProductService adminProductService;
 
     private final ProductRepository productRepository;
+
+    private final FAQService faqService;
 
 
     @PostMapping("addProducts")
@@ -52,5 +57,10 @@ public class AdminProductController {
            return ResponseEntity.noContent().build();
        }
        return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("faq/{productId}")
+    public ResponseEntity<FAQDto> postFAQ(@PathVariable Long productId, @RequestBody FAQDto faqDto){
+        return ResponseEntity.status(HttpStatus.CREATED).body(faqService.postFAQ(productId, faqDto));
     }
 }
