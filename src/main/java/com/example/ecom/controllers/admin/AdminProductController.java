@@ -16,6 +16,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/admin/")
@@ -27,6 +31,9 @@ public class AdminProductController {
     private final ProductRepository productRepository;
 
     private final FAQService faqService;
+
+    private static final Logger log = LoggerFactory.getLogger(AdminProductController.class);
+
 
 
     @PostMapping("addProducts")
@@ -63,4 +70,31 @@ public class AdminProductController {
     public ResponseEntity<FAQDto> postFAQ(@PathVariable Long productId, @RequestBody FAQDto faqDto){
         return ResponseEntity.status(HttpStatus.CREATED).body(faqService.postFAQ(productId, faqDto));
     }
+
+    @GetMapping("product/{productId}")
+    public ResponseEntity<ProductDto> getProductById(@PathVariable Long productId) throws IOException {
+        ProductDto productDto = adminProductService.getProductById(productId);
+        if (productDto != null) {
+            return ResponseEntity.ok(productDto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+        @PutMapping("updateProduct/{productId}")
+        public ResponseEntity<ProductDto> updateProduct(@PathVariable Long productId,@ModelAttribute ProductDto productDto) throws IOException {
+            log.debug("Received request to update product with id: {}", productId);
+
+            System.out.println("Received ProductDTO: " + productDto);
+
+
+            ProductDto updatedProduct = adminProductService.updateProduct(productId, productDto);
+            if(updatedProduct != null){
+                return ResponseEntity.ok(updatedProduct);
+            }
+            else {
+                return ResponseEntity.notFound().build();
+            }
+        }
+
 }
