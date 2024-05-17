@@ -1,5 +1,6 @@
 package com.example.ecom.services.jwt.Customer;
 
+import com.example.ecom.dto.ProductDetailDto;
 import com.example.ecom.dto.ProductDto;
 
 
@@ -12,5 +13,7 @@ public interface CustomerProductService {
     List<ProductDto> getAllProducts();
 
     List<ProductDto> getAllProductsByName(String name);
+
+    ProductDetailDto getProductDetailById(Long productId);
 
 }
