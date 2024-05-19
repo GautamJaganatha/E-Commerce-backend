@@ -1,5 +1,6 @@
 package com.example.ecom.controllers.admin;
 
+import com.example.ecom.dto.AnalyticsResponse;
 import com.example.ecom.dto.OrderDto;
 import com.example.ecom.services.jwt.admin.category.adminOrder.AdminOrderService;
 import com.example.ecom.services.jwt.cart.CartService;
@@ -33,6 +34,11 @@ public class AdminOrderController {
         if (orderDto == null)
             return new ResponseEntity<>("Something went wrong!", HttpStatus.BAD_REQUEST);
         return ResponseEntity.status(HttpStatus.OK).body(orderDto);
+    }
+
+    @GetMapping("order/Analytics")
+    public ResponseEntity<AnalyticsResponse> getAnalytics(){
+        return ResponseEntity.ok(adminOrderService.calculateAnalytics());
     }
 
 

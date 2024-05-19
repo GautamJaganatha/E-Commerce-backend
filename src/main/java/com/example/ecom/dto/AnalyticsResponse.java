@@ -1,2 +1,23 @@
-package com.example.ecom.dto;public class AnalyticsResponse {
+package com.example.ecom.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
+public class AnalyticsResponse {
+
+    private Long placed;
+
+    private Long shipped;
+
+    private Long delivered;
+
+    private Long currentMonthOrders;
+
+    private Long previousMonthOrder;
+
+    private Long currentMonthEarnings;
+
+    private Long previousMonthEarnings;
 }
